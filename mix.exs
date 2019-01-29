@@ -61,7 +61,7 @@ defmodule Forcex.Mixfile do
   # Type `mix help deps` for more examples and options
   defp deps do
     [
-      {:httpoison, "~> 0.13 or ~> 1.0"},
+      {:httpoison, "~> 1.5"},
       {:exjsx, "< 5.0.0"},
       {:poison, "~> 2.0 or ~> 3.1"},
       {:timex, "~> 2.0 or ~> 3.0"},
