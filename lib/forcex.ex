@@ -16,28 +16,28 @@ defmodule Forcex do
     @api.raw_request(method, url, format_body(body), headers, options)
   end
 
-  @spec post(String.t, map | String.t, list, client) :: response
-  def post(path, body \\ "", headers \\ [], client) do
+  @spec post(String.t, map | String.t, client) :: response
+  def post(path, body \\ "", client) do
     url = client.endpoint <> path
     headers = [{"Content-Type", "application/json"}]
     json_request(:post, url, body, headers ++ client.authorization_header, [])
   end
 
-  @spec patch(String.t, String.t, list, client) :: response
-  def patch(path, body \\ "", headers \\ [], client) do
+  @spec patch(String.t, String.t, client) :: response
+  def patch(path, body \\ "", client) do
     url = client.endpoint <> path
     headers = [{"Content-Type", "application/json"}]
     json_request(:patch, url, body, headers ++ client.authorization_header, [])
   end
 
-  @spec delete(String.t, list, client) :: response
-  def delete(path, headers \\ [], client) do
+  @spec delete(String.t, client) :: response
+  def delete(path, client) do
     url = client.endpoint <> path
     @api.raw_request(:delete, url, "", client.authorization_header, [])
   end
 
-  @spec get(String.t, list, client) :: response
-  def get(path, headers \\ [], client) do
+  @spec get(String.t, map | String.t, list, client) :: response
+  def get(path, body \\ "", headers \\ [], client) do
     url = client.endpoint <> path
     json_request(:get, url, body, headers ++ client.authorization_header, [])
   end
@@ -90,7 +90,7 @@ defmodule Forcex do
     base = service_endpoint(client, :sobjects)
 
     "#{base}/#{sobject}/describe/"
-    |> get([{"If-Modified-Since", since}], client)
+    |> get("", [{"If-Modified-Since", since}], client)
   end
 
   @spec composite_query(map, client) :: response

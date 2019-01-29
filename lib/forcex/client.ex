@@ -30,7 +30,6 @@ defmodule Forcex.Client do
         security_token: "...",
         client_id: "...",
         client_secret: "...",
-        debug: true
         endpoint: "..."
       }
 
@@ -40,7 +39,6 @@ defmodule Forcex.Client do
     - `SALESFORCE_SECURITY_TOKEN`
     - `SALESFORCE_CLIENT_ID`
     - `SALESFORCE_CLIENT_SECRET`
-    - `SALESFORCE_DEBUG`
     - `SALESFORCE_ENDPOINT`
 
   Application configuration
@@ -51,12 +49,10 @@ defmodule Forcex.Client do
         security_token: "EMAILED_FROM_SALESFORCE",
         client_id: "CONNECTED_APP_OAUTH_CLIENT_ID",
         client_secret: "CONNECTED_APP_OAUTH_CLIENT_SECRET",
-        debug: true
         endpoint: "login.salesforce.com"
 
   If no `client_id` is passed login via session id will be attempted with
   `security_token`.
->>>>>>> ac97cb5a9671063728bb12d443ba1cfbee072d77
 
   Will require additional call to `locate_services/1` to identify which Force.com
   services are availabe for your deployment.
@@ -89,18 +85,6 @@ defmodule Forcex.Client do
     |> Enum.map(&({&1, get_val_from_env(&1)}))
     |> Enum.filter(fn {_, v} -> v end)
     |> Enum.into(%{})
-  end
-
-  defp debug(client) do
-    case get_val_from_env(:debug) do
-      true ->
-        IO.inspect(client)
-        client
-      "true" ->
-        IO.inspect(client)
-        client
-      _ -> client
-    end
   end
 
   defp get_val_from_env(key) do
