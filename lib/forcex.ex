@@ -14,6 +14,7 @@ defmodule Forcex do
   @spec json_request(method, String.t, map | String.t, list, list) :: response
   def json_request(method, url, body, headers, options) do
     Logger.warn("API: #{inspect(@api)}")
+    Logger.warn("#{method} #{url} #{format_body(body)} #{inspect(headers)} #{inspect(options)}")
     @api.raw_request(method, url, format_body(body), headers, options)
   end
 
@@ -63,12 +64,12 @@ defmodule Forcex do
 
   @spec services(client) :: response
   def services(%Forcex.Client{} = client) do
-    Logger.debug("Calling services with client: #{inspect(client)}")
-    Logger.debug("URL: /services/data/v#{client.api_version}")
+    Logger.warn("Calling services with client: #{inspect(client)}")
+    Logger.warn("URL: /services/data/v#{client.api_version}")
 
     response = get("/services/data/v#{client.api_version}", client)
 
-    Logger.debug("Received response #{inspect(response)}")
+    Logger.warn("Received response #{inspect(response)}")
 
     response
   end
