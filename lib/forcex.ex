@@ -13,6 +13,7 @@ defmodule Forcex do
 
   @spec json_request(method, String.t, map | String.t, list, list) :: response
   def json_request(method, url, body, headers, options) do
+    Logger.warn("API: #{inspect(@api)}")
     @api.raw_request(method, url, format_body(body), headers, options)
   end
 
@@ -22,7 +23,7 @@ defmodule Forcex do
 
     headers = [{"Content-Type", "application/json"}] ++ client.authorization_header
 
-    Logger.warn("POST #{path}")
+    Logger.warn("POST #{url}")
     Logger.warn("|#{inspect(headers)}")
     Logger.warn("|#{body}")
     Logger.warn("|#{inspect(client)}")
