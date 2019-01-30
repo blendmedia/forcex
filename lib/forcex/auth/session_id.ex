@@ -8,6 +8,8 @@ defmodule Forcex.Auth.SessionId do
   @api Application.get_env(:forcex, :api) || Forcex.Api.Http
 
   def login(conf, starting_struct) do
+    Logger.warn("SessionId login")
+
     schema = "http://www.w3.org/2001/XMLSchema"
     schema_instance = "http://www.w3.org/2001/XMLSchema-instance"
     env = "http://schemas.xmlsoap.org/soap/envelope/"

@@ -62,6 +62,8 @@ defmodule Forcex.Client do
         |> Forcex.Client.locate_services
   """
   def login(config \\ default_config()) do
+    Logger.warn("logging in with config: #{inspect(config)}")
+
     login(config, %__MODULE__{endpoint: config[:endpoint] || @default_endpoint})
   end
 

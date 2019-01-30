@@ -6,6 +6,7 @@ defmodule Forcex.Auth.OAuth do
   @behaviour Forcex.Auth
 
   def login(conf, starting_struct) do
+    Logger.warn("OAuth login")
     login_payload =
       conf
       |> Map.put(:password, "#{conf.password}#{conf.security_token}")
