@@ -13,8 +13,12 @@ defmodule Forcex do
 
   @spec json_request(method, String.t, map | String.t, list, list) :: response
   def json_request(method, url, body, headers, options) do
-    Logger.warn("API: #{inspect(@api)}")
-    Logger.warn("#{method} #{url} #{format_body(body)} #{inspect(headers)} #{inspect(options)}")
+    Logger.debug("API: #{inspect(@api)}")
+    Logger.debug("|#{inspect(method)}")
+    Logger.debug("|#{inspect(format_body(body))}")
+    Logger.debug("|#{inspect(headers)}")
+    Logger.debug("|#{inspect(options)}")
+
     @api.raw_request(method, url, format_body(body), headers, options)
   end
 
@@ -23,11 +27,6 @@ defmodule Forcex do
     url = client.endpoint <> path
 
     headers = [{"Content-Type", "application/json"}] ++ client.authorization_header
-
-    Logger.warn("POST #{url}")
-    Logger.warn("|#{inspect(headers)}")
-    Logger.warn("|#{body}")
-    Logger.warn("|#{inspect(client)}")
 
     json_request(:post, url, body, headers, [])
   end
@@ -48,13 +47,7 @@ defmodule Forcex do
   @spec get(String.t, map | String.t, list, client) :: response
   def get(path, body \\ "", headers \\ [], client) do
     url = client.endpoint <> path
-    Logger.debug("get with url: #{url}")
-
-    req = json_request(:get, url, body, headers ++ client.authorization_header, [])
-
-    Logger.debug("json request: #{inspect(req)}")
-
-    req
+    json_request(:get, url, body, headers ++ client.authorization_header, [])
   end
 
   @spec versions(client) :: response
@@ -64,14 +57,7 @@ defmodule Forcex do
 
   @spec services(client) :: response
   def services(%Forcex.Client{} = client) do
-    Logger.warn("Calling services with client: #{inspect(client)}")
-    Logger.warn("URL: /services/data/v#{client.api_version}")
-
-    response = get("/services/data/v#{client.api_version}", client)
-
-    Logger.warn("Received response #{inspect(response)}")
-
-    response
+    get("/services/data/v#{client.api_version}", client)
   end
 
   @basic_services [

@@ -15,13 +15,10 @@ defmodule Forcex.Api.Http do
   @type forcex_response :: map | {number, any}
 
   def raw_request(method, url, body, headers, options) do
-    Logger.warn("#{method}|#{url}|#{body}|#{headers}|#{options}")
-
     case request(method, url, body, headers, extra_options() ++ options) do
       {:ok, response} ->
-        Logger.warn("response: #{inspect(response)}")
         processed_response = process_response(response)
-        Logger.warn("#{__ENV__.module}.#{elem(__ENV__.function, 0)} response=" <> inspect(processed_response))
+        Logger.debug("processed_response: #{inspect(processed_response)}")
         processed_response
       {:error, e} ->
         Logger.error("SF call failed with error: #{inspect(e)}")
@@ -54,6 +51,8 @@ defmodule Forcex.Api.Http do
   end
   def process_response(%HTTPoison.Response{body: body, status_code: 200}), do: body
   def process_response(%HTTPoison.Response{body: body, status_code: status}), do: {status, body}
+  # Processes just the body as a map
+  def process_response(body), do: body
 
   @spec process_request_headers(list({String.t, String.t})) :: list({String.t, String.t})
   def process_request_headers(headers), do: headers ++ @user_agent ++ @accept ++ @accept_encoding
