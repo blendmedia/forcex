@@ -39,7 +39,13 @@ defmodule Forcex do
   @spec get(String.t, map | String.t, list, client) :: response
   def get(path, body \\ "", headers \\ [], client) do
     url = client.endpoint <> path
-    json_request(:get, url, body, headers ++ client.authorization_header, [])
+    Logger.debug("get with url: #{url}")
+
+    req = json_request(:get, url, body, headers ++ client.authorization_header, [])
+
+    Logger.debug("json request: #{inspect(req)}")
+
+    req
   end
 
   @spec versions(client) :: response
@@ -49,7 +55,14 @@ defmodule Forcex do
 
   @spec services(client) :: response
   def services(%Forcex.Client{} = client) do
-    get("/services/data/v#{client.api_version}", client)
+    Logger.debug("Calling services with client: #{inspect(client)}")
+    Logger.debug("URL: /services/data/v#{client.api_version}")
+
+    response = get("/services/data/v#{client.api_version}", client)
+
+    Logger.debug("Received response #{inspect(response)}")
+
+    response
   end
 
   @basic_services [

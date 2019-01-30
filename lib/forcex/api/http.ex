@@ -15,9 +15,17 @@ defmodule Forcex.Api.Http do
   @type forcex_response :: map | {number, any}
 
   def raw_request(method, url, body, headers, options) do
-    response = method |> request!(url, body, headers, extra_options() ++ options) |> process_response
-    Logger.debug("#{__ENV__.module}.#{elem(__ENV__.function, 0)} response=" <> inspect(response))
-    response
+    Logger.debug("#{method}|#{url}|#{body}|#{headers}|#{options}")
+
+    response = method
+               |> request!(url, body, headers, extra_options() ++ options)
+
+    Logger.debug("response: #{inspect(response)}")
+
+    processed_response = process_response(response)
+
+    Logger.debug("#{__ENV__.module}.#{elem(__ENV__.function, 0)} response=" <> inspect(processed_response))
+    processed_response
   end
 
   @spec extra_options :: list
