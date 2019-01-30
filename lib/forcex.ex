@@ -19,8 +19,15 @@ defmodule Forcex do
   @spec post(String.t, map | String.t, client) :: response
   def post(path, body \\ "", client) do
     url = client.endpoint <> path
-    headers = [{"Content-Type", "application/json"}]
-    json_request(:post, url, body, headers ++ client.authorization_header, [])
+
+    headers = [{"Content-Type", "application/json"}] ++ client.authorization_header
+
+    Logger.warn("POST #{path}")
+    Logger.warn("|#{inspect(headers)}")
+    Logger.warn("|#{body}")
+    Logger.warn("|#{inspect(client)}")
+
+    json_request(:post, url, body, headers, [])
   end
 
   @spec patch(String.t, String.t, client) :: response
