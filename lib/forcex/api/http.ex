@@ -19,9 +19,9 @@ defmodule Forcex.Api.Http do
 
     case request(method, url, body, headers, extra_options() ++ options) do
       {:ok, response} ->
-        Logger.debug("response: #{inspect(response)}")
+        Logger.warn("response: #{inspect(response)}")
         processed_response = process_response(response)
-        Logger.debug("#{__ENV__.module}.#{elem(__ENV__.function, 0)} response=" <> inspect(processed_response))
+        Logger.warn("#{__ENV__.module}.#{elem(__ENV__.function, 0)} response=" <> inspect(processed_response))
         processed_response
       {:error, e} ->
         Logger.error("SF call failed with error: #{inspect(e)}")
