@@ -12,7 +12,7 @@ defmodule Forcex.Api.Http do
   @accept_encoding [{"Accept-Encoding", "gzip,deflate"}]
 
   @type method :: :get | :put | :post | :patch | :delete
-  @type forcex_response :: map | {number, any}
+  @type forcex_response :: map | {number, any} | String.t
 
   def raw_request(method, url, body, headers, options) do
     case request(method, url, body, headers, extra_options() ++ options) do
@@ -32,7 +32,7 @@ defmodule Forcex.Api.Http do
   end
 
   @spec process_response(HTTPoison.Response.t) :: forcex_response
-  def process_response(%HTTPoison.Response{body: body, headers: %{"Content-Encoding" => "gzip"} = headers} = resp) do
+  defp process_response(%HTTPoison.Response{body: body, headers: %{"Content-Encoding" => "gzip"} = headers} = resp) do
     %{resp | body: :zlib.gunzip(body), headers: Map.drop(headers, ["Content-Encoding"])}
     |> process_response
   end
@@ -54,7 +54,6 @@ defmodule Forcex.Api.Http do
   # Processes just the body as a map
   def process_response(body), do: body
 
-  @spec process_request_headers(list({String.t, String.t})) :: list({String.t, String.t})
   def process_request_headers(headers), do: headers ++ @user_agent ++ @accept ++ @accept_encoding
 
   @spec process_headers(list({String.t, String.t})) :: map

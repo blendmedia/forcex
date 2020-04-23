@@ -1,5 +1,5 @@
 defmodule Forcex.Bulk.Client do
-  defstruct session_id: nil, api_version: "41.0", endpoint: "https://login.salesforce.com", host: nil
+  defstruct session_id: nil, api_version: "43.0", endpoint: "https://login.salesforce.com", host: nil
 
   require Logger
 
@@ -55,7 +55,7 @@ defmodule Forcex.Bulk.Client do
       {"Content-Type", "text/xml; charset=UTF-8"},
       {"SOAPAction", "login"},
     ]
-    HTTPoison.post!("https://login.salesforce.com/services/Soap/u/#{starting_struct.api_version}", envelope, headers)
+    HTTPoison.post!("#{starting_struct.endpoint}/services/Soap/u/#{starting_struct.api_version}", envelope, headers)
     |> parse_login_response
   end
 
